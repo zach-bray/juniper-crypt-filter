@@ -1,0 +1,8 @@
+---
+- name: Test juniper_usm_crypt9 filters
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - debug:
+        msg: "{{ 'PASSWORD' | juniper_usm_crypt9('10.10.10.10') }}"

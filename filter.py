@@ -1,13 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from junipercrypt import junipercrypt
+from juniperSNMPv3crypt import crypt9, snmpv3_hash
 
 class FilterModule(object):
     def filters(self):
         return {
-            'juniper_encrypt': self.juniper_encrypt
+            'juniper_usm_crypt9': self.juniper_usm_crypt9
         }
 
-    def juniper_encrypt(self, hash):
-        return junipercrypt.encrypt(hash)
+    def juniper_usm_crypt9(self, passphrase, ipaddr, alg="sha1"):
+    	engineid = snmpv3_hash.gen_engineid(ipaddr)
+    	hashed = snmpv3_hash.derive_msg(passphrase, engineid, alg)
+    	return crypt9.encrypt(hashed, seed=1337)
